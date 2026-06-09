@@ -1,0 +1,21 @@
+{
+  "id": "mahnazarjmand/customer-segmentation-clustring",
+  "id_no": 33406335,
+  "title": "customer segmentation clustring",
+  "code_file": "customer-segmentation-clustring.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [],
+  "dataset_sources": [
+    "mahnazarjmand/customer-segmentation"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-images/python@sha256:b6e76e491faf320ee0199256d68e26763370b8fd5a86b19b4780ea9b306d85cf",
+  "machine_shape": "None"
+}
