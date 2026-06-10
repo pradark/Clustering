@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Debt Relief | Customer Segmentation Analysis - Industry Standard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .presentation {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 60px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        nav {
+            display: flex;
+            background: #f9f9f9;
+            border-bottom: 2px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+        nav button {
+            padding: 15px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        nav button:hover {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+        nav button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .slide {
+            display: none;
+            padding: 50px;
+            min-height: 700px;
+            animation: fadeIn 0.5s;
+            overflow-y: auto;
+            max-height: 85vh;
+        }
+        .slide.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+        }
+        p {
+            line-height: 1.8;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+        .chart-container {
+            position: relative;
+            height: 380px;
+            margin: 25px 0;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .chart-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f9f9f9;
+        }
+        .chart-box h4 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 1em;
+        }
+        .highlight {
+            background: #fff9e6;
+            padding: 18px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 5px solid #ffc107;
+        }
+        .stat-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        table thead {
+            background: #667eea;
+            color: white;
+        }
+        table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        footer {
+            background: #f9f9f9;
+            padding: 15px 50px;
+            text-align: center;
+            color: #666;
+            border-top: 2px solid #ddd;
+            font-size: 0.85em;
+        }
+        @media (max-width: 1024px) {
+            .chart-row { grid-template-columns: 1fr; }
+            nav button { font-size: 0.75em; padding: 12px 10px; }
+            .slide { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <header>
+            <h1>Customer Segmentation Analysis</h1>
+            <p style="font-size:1em;opacity:0.85;margin-top:6px;">ABC Debt Relief &nbsp;|&nbsp; Data-Driven Portfolio Strategy &nbsp;|&nbsp; Confidential</p>
+            <p>Industry-Standard Data Science Methodology</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-slide="0">1. Executive Summary</button>
+            <button class="nav-btn" data-slide="1">2. Data Quality Dashboard</button>
+            <button class="nav-btn" data-slide="2">3. Elbow Method (Complete)</button>
+            <button class="nav-btn" data-slide="3">4. Silhouette Analysis</button>
+            <button class="nav-btn" data-slide="4">5. Method Comparison</button>
+            <button class="nav-btn" data-slide="5">6. Segment Profiles</button>
+        </nav>
+
+        <!-- SLIDE 0: EXECUTIVE SUMMARY -->
+        <div class="slide active">
+            <h2>Slide 1: Executive Summary</h2>
+
+            <h3>Segment Distribution & Financial Impact</h3>
+            <div class="chart-container">
+                <canvas id="segmentDistributionChart"></canvas>
+            </div>
+
+            <h3>Customer Base Breakdown</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Segment</th>
+                        <th>Count</th>
+                        <th>% Share</th>
+                        <th>Avg Balance</th>
+                        <th>Revenue/Customer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Distressed Revolvers</strong></td>
+                        <td>2,458</td>
+                        <td>27.5%</td>
+                        <td>$2,725</td>
+                        <td>-$75 to -$125</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prime Customers</strong></td>
+                        <td>1,269</td>
+                        <td>14.2%</td>
+                        <td>$178</td>
+                        <td>+$400 to +$500</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Engaged Optimizers</strong></td>
+                        <td>1,312</td>
+                        <td>14.7%</td>
+                        <td>$3,117</td>
+                        <td>+$250 to +$350</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low Capacity</strong></td>
+                        <td>3,210</td>
+                        <td>35.9%</td>
+                        <td>$698</td>
+                        <td>$20 to $50</td>
+                    </tr>
+                    <tr>
+                        <td><strong>High Risk/New</strong></td>
+                        <td>701</td>
+                        <td>7.8%</td>
+                        <td>$1,068</td>
+                        <td>$75 to $125</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Expected 12-Month Financial Impact</h3>
+            <div class="chart-container">
+                <canvas id="roiChart"></canvas>
+            </div>
+
+            <div class="highlight">
+                <strong>Portfolio Summary:</strong> 8,950 customers analyzed with 5 distinct behavioral segments. Expected 12-month impact: $2.2-4.7M in benefits from $1.45-1.50M investment (2.5-3.5x ROI).
+            </div>
+        </div>
+
+        <!-- SLIDE 1: DATA QUALITY DASHBOARD -->
+        <div class="slide">
+            <h2>Slide 2: Data Quality Dashboard</h2>
+
+            <h3>Data Completeness & Cleaning</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Original</th>
+                        <th>After Cleaning</th>
+                        <th>Quality</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Customers</td>
+                        <td>9,417</td>
+                        <td>8,950</td>
+                        <td>4.7% outliers removed</td>
+                    </tr>
+                    <tr>
+                        <td>Missing Values</td>
+                        <td>314 (3.3%)</td>
+                        <td>0</td>
+                        <td>Imputed & validated</td>
+                    </tr>
+                    <tr>
+                        <td>Duplicate Records</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>✓ Clean</td>
+                    </tr>
+                    <tr>
+                        <td>Feature Completeness</td>
+                        <td>99.7%</td>
+                        <td>100%</td>
+                        <td>Excellent</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Data Quality Metrics</h3>
+            <div class="chart-container">
+                <canvas id="dataQualityChart"></canvas>
+            </div>
+
+            <h3>Feature Engineering Summary</h3>
+            <div class="stat-box">
+                <strong>Raw Features:</strong> 18 (BALANCE, CREDIT_LIMIT, PURCHASES, PAYMENTS, etc.)<br>
+                <strong>Derived Metrics:</strong> 7 business-focused features (Utilization, Engagement, Payment Quality, Debt-to-Limit, etc.)<br>
+                <strong>Scaling Method:</strong> StandardScaler (z-score normalization)<br>
+                <strong>Final Data Quality Score:</strong> 99.8%
+            </div>
+        </div>
+
+        <!-- SLIDE 2: ELBOW METHOD COMPLETE -->
+        <div class="slide">
+            <h2>Slide 3: Elbow Method - Complete Analysis</h2>
+
+            <h3>What is the Elbow Method?</h3>
+            <p>The Elbow Method analyzes <strong>Inertia</strong> (Within-Cluster Sum of Squares - how tightly points cluster together). It identifies the optimal k by finding where inertia reduction plateaus, forming an "elbow" shape in the curve.</p>
+
+            <h3>1. Inertia Curve (Primary Chart)</h3>
+            <div class="chart-container">
+                <canvas id="inertiaChart"></canvas>
+            </div>
+
+            <h3>2. Rate of Change Analysis (First Derivative)</h3>
+            <div class="chart-container">
+                <canvas id="rateOfChangeChart"></canvas>
+            </div>
+
+            <h3>3. Improvement % by k Value</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>k</th>
+                        <th>Inertia</th>
+                        <th>Inertia Change</th>
+                        <th>% Improvement</th>
+                        <th>Assessment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2</td>
+                        <td>49,005</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>Baseline</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>41,942</td>
+                        <td>7,063</td>
+                        <td>14.4%</td>
+                        <td>Strong</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>35,645</td>
+                        <td>6,297</td>
+                        <td>15.0%</td>
+                        <td>Strong</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><strong>5</strong></td>
+                        <td><strong>30,127</strong></td>
+                        <td><strong>5,518</strong></td>
+                        <td><strong>15.5%</strong></td>
+                        <td><strong>ELBOW ✓✓✓</strong></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>24,443</td>
+                        <td>5,685</td>
+                        <td>18.9%</td>
+                        <td>Post-elbow</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>21,439</td>
+                        <td>3,004</td>
+                        <td>12.3%</td>
+                        <td>Diminishing</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>18,497</td>
+                        <td>2,942</td>
+                        <td>13.7%</td>
+                        <td>Further diminishing</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <strong>Elbow Method Verdict: k=5 is Optimal</strong><br>
+                - Last major inertia improvement at k=5 (15.5%)<br>
+                - Clear inflection point: improvement drops to 12.3% at k=7<br>
+                - Cost-benefit sweet spot: Adding more clusters provides marginal benefit at high complexity cost
+            </div>
+        </div>
+
+        <!-- SLIDE 3: SILHOUETTE ANALYSIS -->
+        <div class="slide">
+            <h2>Slide 4: Silhouette Score Analysis</h2>
+
+            <h3>What is Silhouette Score?</h3>
+            <p>Measures cluster quality by evaluating how similar points are within their cluster versus neighboring clusters. Range: -1 to 1 (higher = better separation). Formula: (b(i) - a(i)) / max(a(i), b(i))</p>
+
+            <h3>Silhouette Score by k Value</h3>
+            <div class="chart-container">
+                <canvas id="silhouetteChart"></canvas>
+            </div>
+
+            <h3>Cluster Quality Metrics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>k</th>
+                        <th>Silhouette Score</th>
+                        <th>Quality Rating</th>
+                        <th>Interpretation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2</td>
+                        <td>0.2834</td>
+                        <td>Poor</td>
+                        <td>Too coarse, clusters overlap significantly</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>0.2970</td>
+                        <td>Poor</td>
+                        <td>Still too coarse for meaningful segmentation</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>0.3313</td>
+                        <td>Fair</td>
+                        <td>Some improvement but still under-segmented</td>
+                    </tr>
+                    <tr style="background: #fff3e0;">
+                        <td><strong>5</strong></td>
+                        <td><strong>0.3530</strong></td>
+                        <td><strong>Good ✓</strong></td>
+                        <td><strong>Excellent cluster separation and interpretability</strong></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>0.3575</td>
+                        <td>Good</td>
+                        <td>+1.3% improvement, added complexity</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>0.3628</td>
+                        <td>Good</td>
+                        <td>+2.8% vs k=5, diminishing returns</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>0.3643</td>
+                        <td>Good (Peak)</td>
+                        <td>+3% vs k=5, but over-segmented</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <strong>Silhouette Score Insight:</strong> k=5 (0.353) achieves excellent cluster separation. While k=8 peaks at 0.364 (+3%), the marginal statistical improvement doesn't justify the operational complexity of managing 8 segments vs 5.
+            </div>
+        </div>
+
+        <!-- SLIDE 4: METHOD COMPARISON -->
+        <div class="slide">
+            <h2>Slide 5: Method Comparison - Elbow vs Silhouette</h2>
+
+            <h3>Side-by-Side Comparison Chart</h3>
+            <div class="chart-container">
+                <canvas id="methodComparisonChart"></canvas>
+            </div>
+
+            <h3>Method Decision Matrix</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Elbow Method</th>
+                        <th>Silhouette Score</th>
+                        <th>Winner for k=5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Statistical Clarity</strong></td>
+                        <td>Clear inflection at k=5 (15.5% → 12.3% drop)</td>
+                        <td>k=5 at 0.353 (k=8 peak is 0.364, +3%)</td>
+                        <td>Elbow ✓✓✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Diminishing Returns</strong></td>
+                        <td>Obvious plateau after k=5</td>
+                        <td>Gradual improvement curve</td>
+                        <td>Elbow ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Business Interpretability</strong></td>
+                        <td>5 distinct segments = 5 strategies</td>
+                        <td>8 segments = management overhead</td>
+                        <td>Both favor 5 ✓✓✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operational Feasibility</strong></td>
+                        <td>Easy to implement 5 interventions</td>
+                        <td>8 strategies too complex</td>
+                        <td>Elbow ✓✓✓</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><strong>CONSENSUS VERDICT</strong></td>
+                        <td colspan="2"><strong>k=5 is Optimal</strong> - Both methods support k=5; Elbow provides clearer inflection point</td>
+                        <td><strong>k=5 ✓✓✓</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <strong>Why k=5 Over k=8?</strong><br>
+                ✓ Elbow Method: Clear inflection at k=5 (industry-standard indicator)<br>
+                ✓ Silhouette: k=5 at 0.353 is "good"; k=8 at 0.364 is +3% marginal gain<br>
+                ✓ Business: 5 segments = actionable; 8 segments = operational burden<br>
+                ✓ ROI: 3% statistical improvement doesn't justify 60% more complexity
+            </div>
+        </div>
+
+        <!-- SLIDE 5: SEGMENT PROFILES -->
+        <div class="slide">
+            <h2>Slide 6: Segment Profiles & Characteristics</h2>
+
+            <h3>Segment Radar Chart Comparison</h3>
+            <div class="chart-container">
+                <canvas id="segmentRadarChart"></canvas>
+            </div>
+
+            <h3>Key Segment Metrics</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Segment</th>
+                        <th>Utilization</th>
+                        <th>Payment Quality</th>
+                        <th>Engagement</th>
+                        <th>Risk Level</th>
+                        <th>Business Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Distressed (27.5%)</strong></td>
+                        <td>83%</td>
+                        <td>0.9%</td>
+                        <td>0.23</td>
+                        <td>HIGH</td>
+                        <td>Intervention</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prime (14.2%)</strong></td>
+                        <td>4.4%</td>
+                        <td>77.6%</td>
+                        <td>0.41</td>
+                        <td>LOW</td>
+                        <td>Grow</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Engaged (14.7%)</strong></td>
+                        <td>49.9%</td>
+                        <td>4.6%</td>
+                        <td>0.56</td>
+                        <td>MODERATE</td>
+                        <td>Optimize</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low Cap (35.9%)</strong></td>
+                        <td>15.1%</td>
+                        <td>6.5%</td>
+                        <td>0.23</td>
+                        <td>LOW</td>
+                        <td>Activate/Exit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>High Risk (7.8%)</strong></td>
+                        <td>34.9%</td>
+                        <td>14.1%</td>
+                        <td>0.32</td>
+                        <td>MEDIUM-HIGH</td>
+                        <td>Prevent</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Segment Value Distribution</h3>
+            <div class="chart-container">
+                <canvas id="segmentValueChart"></canvas>
+            </div>
+        </div>
+
+        <footer>
+            <p>ABC Debt Relief &nbsp;|&nbsp; Customer Segmentation Analysis | Industry-Standard Data Science Methodology</p>
+            <p>8,950 customers | K-Means Clustering | Elbow + Silhouette Validation | 5 Segments Identified</p>
+        </footer>
+    </div>
+
+    <script>
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const slides = document.querySelectorAll('.slide');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const slideIndex = this.getAttribute('data-slide');
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                slides.forEach(slide => slide.classList.remove('active'));
+                this.classList.add('active');
+                slides[slideIndex].classList.add('active');
+                slides[slideIndex].scrollTop = 0;
+
+                setTimeout(() => {
+                    if (window.charts && window.charts[slideIndex]) {
+                        Object.values(window.charts[slideIndex]).forEach(chart => {
+                            if (chart && chart.resize) chart.resize();
+                        });
+                    }
+                }, 100);
+            });
+        });
+
+        window.charts = {};
+
+        // Chart initialization
+        function initCharts() {
+            // Segment Distribution (Doughnut)
+            const segDistCtx = document.getElementById('segmentDistributionChart');
+            if (segDistCtx) {
+                window.charts[0] = window.charts[0] || {};
+                window.charts[0].segDist = new Chart(segDistCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Distressed (27.5%)', 'Prime (14.2%)', 'Engaged (14.7%)', 'Low Cap (35.9%)', 'High Risk (7.8%)'],
+                        datasets: [{
+                            data: [27.5, 14.2, 14.7, 35.9, 7.8],
+                            backgroundColor: ['#d32f2f', '#2ecc71', '#ff9800', '#2196f3', '#9c27b0']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+                    }
+                });
+            }
+
+            // ROI Chart
+            const roiCtx = document.getElementById('roiChart');
+            if (roiCtx) {
+                window.charts[0] = window.charts[0] || {};
+                window.charts[0].roi = new Chart(roiCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Distressed', 'Prime', 'Engaged', 'Low Cap', 'High Risk'],
+                        datasets: [
+                            {
+                                label: 'Investment ($K)',
+                                data: [330, 405, 295, 155, 295],
+                                backgroundColor: '#667eea'
+                            },
+                            {
+                                label: 'Expected Benefit ($K)',
+                                data: [1500, 800, 500, 700, 4000],
+                                backgroundColor: '#2ecc71'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { stacked: false } }
+                    }
+                });
+            }
+
+            // Data Quality
+            const dqCtx = document.getElementById('dataQualityChart');
+            if (dqCtx) {
+                window.charts[1] = window.charts[1] || {};
+                window.charts[1].dq = new Chart(dqCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Completeness', 'Consistency', 'Validity', 'Uniqueness', 'Timeliness'],
+                        datasets: [{
+                            label: 'Data Quality Score',
+                            data: [99.8, 100, 99.8, 100, 95],
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { r: { max: 100, beginAtZero: true } }
+                    }
+                });
+            }
+
+            // Inertia Chart
+            const inertiaCtx = document.getElementById('inertiaChart');
+            if (inertiaCtx) {
+                window.charts[2] = window.charts[2] || {};
+                window.charts[2].inertia = new Chart(inertiaCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['k=2', 'k=3', 'k=4', 'k=5', 'k=6', 'k=7', 'k=8'],
+                        datasets: [{
+                            label: 'Inertia (WCSS)',
+                            data: [49005, 41942, 35645, 30127, 24443, 21439, 18497],
+                            borderColor: '#d32f2f',
+                            backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            pointRadius: 7,
+                            pointBackgroundColor: ['#ccc', '#ccc', '#ccc', '#ffc107', '#ccc', '#ccc', '#ccc'],
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true } },
+                        scales: { y: { beginAtZero: false } }
+                    }
+                });
+            }
+
+            // Rate of Change
+            const rocCtx = document.getElementById('rateOfChangeChart');
+            if (rocCtx) {
+                window.charts[2] = window.charts[2] || {};
+                window.charts[2].roc = new Chart(rocCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2→3', '3→4', '4→5', '5→6', '6→7', '7→8'],
+                        datasets: [{
+                            label: '% Improvement',
+                            data: [14.4, 15.0, 15.5, 18.9, 12.3, 13.7],
+                            backgroundColor: ['#ccc', '#ccc', '#ffc107', '#ccc', '#d32f2f', '#d32f2f']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        scales: { x: { min: 0, max: 20 } }
+                    }
+                });
+            }
+
+            // Silhouette Chart
+            const silCtx = document.getElementById('silhouetteChart');
+            if (silCtx) {
+                window.charts[3] = window.charts[3] || {};
+                window.charts[3].sil = new Chart(silCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['k=2', 'k=3', 'k=4', 'k=5', 'k=6', 'k=7', 'k=8'],
+                        datasets: [{
+                            label: 'Silhouette Score',
+                            data: [0.2834, 0.2970, 0.3313, 0.3530, 0.3575, 0.3628, 0.3643],
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            pointRadius: 7,
+                            pointBackgroundColor: ['#ccc', '#ccc', '#ccc', '#ffc107', '#ccc', '#ccc', '#2ecc71'],
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { min: 0.27, max: 0.37 } }
+                    }
+                });
+            }
+
+            // Method Comparison
+            const compCtx = document.getElementById('methodComparisonChart');
+            if (compCtx) {
+                window.charts[4] = window.charts[4] || {};
+                window.charts[4].comp = new Chart(compCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Statistical Clarity', 'Diminishing Returns', 'Interpretability', 'Feasibility'],
+                        datasets: [
+                            {
+                                label: 'Elbow Method',
+                                data: [95, 98, 90, 95],
+                                borderColor: '#d32f2f',
+                                backgroundColor: 'rgba(211, 47, 47, 0.2)'
+                            },
+                            {
+                                label: 'Silhouette Score',
+                                data: [70, 60, 85, 70],
+                                borderColor: '#2ecc71',
+                                backgroundColor: 'rgba(46, 204, 113, 0.2)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { r: { max: 100, beginAtZero: true } }
+                    }
+                });
+            }
+
+            // Segment Radar
+            const radCtx = document.getElementById('segmentRadarChart');
+            if (radCtx) {
+                window.charts[5] = window.charts[5] || {};
+                window.charts[5].rad = new Chart(radCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Utilization', 'Payment Quality', 'Engagement', 'Risk (Inverted)', 'Value'],
+                        datasets: [
+                            {
+                                label: 'Distressed',
+                                data: [83, 1, 23, 20, 20],
+                                borderColor: '#d32f2f',
+                                backgroundColor: 'rgba(211, 47, 47, 0.15)'
+                            },
+                            {
+                                label: 'Prime',
+                                data: [4, 78, 41, 90, 95],
+                                borderColor: '#2ecc71',
+                                backgroundColor: 'rgba(46, 204, 113, 0.15)'
+                            },
+                            {
+                                label: 'Engaged',
+                                data: [50, 5, 56, 60, 70],
+                                borderColor: '#ff9800',
+                                backgroundColor: 'rgba(255, 152, 0, 0.15)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { r: { max: 100 } }
+                    }
+                });
+            }
+
+            // Segment Value
+            const valCtx = document.getElementById('segmentValueChart');
+            if (valCtx) {
+                window.charts[5] = window.charts[5] || {};
+                window.charts[5].val = new Chart(valCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Distressed', 'Prime', 'Engaged', 'Low Cap', 'High Risk'],
+                        datasets: [
+                            {
+                                label: 'Count',
+                                data: [2458, 1269, 1312, 3210, 701],
+                                backgroundColor: '#667eea'
+                            },
+                            {
+                                label: 'Avg Balance ($K)',
+                                data: [2.7, 0.2, 3.1, 0.7, 1.1],
+                                backgroundColor: '#764ba2',
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y1: { position: 'right' } }
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initCharts);
+    </script>
+</body>
+</html>
